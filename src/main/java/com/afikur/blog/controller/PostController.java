@@ -1,6 +1,6 @@
 package com.afikur.blog.controller;
 
-import com.afikur.blog.PostRepository.PostRepository;
+import com.afikur.blog.repository.PostRepository;
 import com.afikur.blog.dto.PagedResponse;
 import com.afikur.blog.dto.PostRequest;
 import com.afikur.blog.mapper.PostMapper;

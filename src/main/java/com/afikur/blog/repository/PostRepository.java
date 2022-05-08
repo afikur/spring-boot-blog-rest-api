@@ -1,4 +1,4 @@
-package com.afikur.blog.PostRepository;
+package com.afikur.blog.repository;
 
 import com.afikur.blog.model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
