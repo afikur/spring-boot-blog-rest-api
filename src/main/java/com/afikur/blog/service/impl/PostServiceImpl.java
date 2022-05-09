@@ -1,6 +1,8 @@
 package com.afikur.blog.service.impl;
 
+import com.afikur.blog.dto.ApiResponse;
 import com.afikur.blog.dto.PagedResponse;
+import com.afikur.blog.exception.ResourceNotFoundException;
 import com.afikur.blog.model.Post;
 import com.afikur.blog.repository.PostRepository;
 import com.afikur.blog.service.PostService;
@@ -11,10 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +39,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Optional<Post> findById(Long id) {
-        return postRepository.findById(id);
+    public Post findById(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id " + id));
+    }
+
+    @Override
+    public ApiResponse deleteById(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id " + id));
+
+        postRepository.delete(post);
+
+        return new ApiResponse(Boolean.TRUE, "Post has been deleted successfully");
     }
 }

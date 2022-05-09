@@ -1,5 +1,6 @@
 package com.afikur.blog.service;
 
+import com.afikur.blog.dto.ApiResponse;
 import com.afikur.blog.dto.PagedResponse;
 import com.afikur.blog.model.Post;
 
@@ -10,5 +11,7 @@ public interface PostService {
 
     Post save(Post post);
 
-    Optional<Post> findById(Long id);
+    Post findById(Long id);
+
+    ApiResponse deleteById(Long id);
 }

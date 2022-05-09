@@ -1,5 +1,6 @@
 package com.afikur.blog.controller;
 
+import com.afikur.blog.dto.ApiResponse;
 import com.afikur.blog.dto.PagedResponse;
 import com.afikur.blog.dto.PostRequest;
 import com.afikur.blog.exception.ResourceNotFoundException;
@@ -27,8 +28,12 @@ public class PostController {
 
     @GetMapping("/{id}")
     public Post getPost(@PathVariable("id") Long id) {
-        return postService.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id " + id));
+        return postService.findById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public ApiResponse deleteById(@PathVariable("id") Long id) {
+        return postService.deleteById(id);
     }
 
     @PostMapping
