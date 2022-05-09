@@ -23,8 +23,13 @@ public class Post {
     @Column(name = "body")
     private String body;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 

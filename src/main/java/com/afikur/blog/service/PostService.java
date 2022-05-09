@@ -5,8 +5,6 @@ import com.afikur.blog.dto.PagedResponse;
 import com.afikur.blog.dto.PostRequest;
 import com.afikur.blog.model.Post;
 
-import java.util.Optional;
-
 public interface PostService {
     PagedResponse<Post> findAll(int pageNumber, int size);
 
