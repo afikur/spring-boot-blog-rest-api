@@ -2,6 +2,7 @@ package com.afikur.blog.service.impl;
 
 import com.afikur.blog.dto.ApiResponse;
 import com.afikur.blog.dto.PagedResponse;
+import com.afikur.blog.dto.PostRequest;
 import com.afikur.blog.exception.ResourceNotFoundException;
 import com.afikur.blog.model.Post;
 import com.afikur.blog.repository.PostRepository;
@@ -52,5 +53,16 @@ public class PostServiceImpl implements PostService {
         postRepository.delete(post);
 
         return new ApiResponse(Boolean.TRUE, "Post has been deleted successfully");
+    }
+
+    @Override
+    public Post update(PostRequest postRequest, Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id " + id));
+
+        post.setTitle(postRequest.title());
+        post.setBody(postRequest.body());
+
+        return postRepository.save(post);
     }
 }
