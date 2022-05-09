@@ -2,6 +2,7 @@ package com.afikur.blog.controller;
 
 import com.afikur.blog.dto.PagedResponse;
 import com.afikur.blog.dto.PostRequest;
+import com.afikur.blog.exception.ResourceNotFoundException;
 import com.afikur.blog.mapper.PostMapper;
 import com.afikur.blog.model.Post;
 import com.afikur.blog.service.PostService;
@@ -22,6 +23,12 @@ public class PostController {
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             @RequestParam(value = "size", required = false, defaultValue = "30") int size) {
         return postService.findAll(page, size);
+    }
+
+    @GetMapping("/{id}")
+    public Post getPost(@PathVariable("id") Long id) {
+        return postService.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id " + id));
     }
 
     @PostMapping
