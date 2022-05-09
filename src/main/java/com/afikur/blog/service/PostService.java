@@ -15,4 +15,6 @@ public interface PostService {
     ApiResponse deleteById(Long id);
 
     Post update(PostRequest postRequest, Long id);
+
+    PagedResponse<Post> findPostsByUsername(String username, int page, int size);
 }

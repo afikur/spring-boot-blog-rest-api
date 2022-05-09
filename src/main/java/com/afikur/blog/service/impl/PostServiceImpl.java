@@ -5,7 +5,9 @@ import com.afikur.blog.dto.PagedResponse;
 import com.afikur.blog.dto.PostRequest;
 import com.afikur.blog.exception.ResourceNotFoundException;
 import com.afikur.blog.model.Post;
+import com.afikur.blog.model.User;
 import com.afikur.blog.repository.PostRepository;
+import com.afikur.blog.repository.UserRepository;
 import com.afikur.blog.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     @Override
     public PagedResponse<Post> findAll(int page, int size) {
@@ -64,5 +67,19 @@ public class PostServiceImpl implements PostService {
         post.setBody(postRequest.body());
 
         return postRepository.save(post);
+    }
+
+    @Override
+    public PagedResponse<Post> findPostsByUsername(String username, int page, int size) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username " + username));
+
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
+        Page<Post> postPage = postRepository.findByUser(user, pageable);
+
+        List<Post> posts = postPage.getTotalElements() == 0 ? Collections.emptyList() : postPage.getContent();
+
+        return new PagedResponse<>(posts, postPage.getNumber(), postPage.getSize(), postPage.getTotalElements(),
+                postPage.getTotalPages(), postPage.isLast());
     }
 }
