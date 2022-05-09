@@ -1,6 +1,7 @@
 package com.afikur.blog.dto;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public record PostRequest(
@@ -10,5 +11,9 @@ public record PostRequest(
 
         @NotBlank
         @Size(min = 30, message = "length must be at least 30")
-        String body) {
+        String body,
+
+        @NotNull
+        Long categoryId
+        ) {
 }

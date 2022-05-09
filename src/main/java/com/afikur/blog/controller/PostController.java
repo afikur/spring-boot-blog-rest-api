@@ -3,7 +3,6 @@ package com.afikur.blog.controller;
 import com.afikur.blog.dto.ApiResponse;
 import com.afikur.blog.dto.PagedResponse;
 import com.afikur.blog.dto.PostRequest;
-import com.afikur.blog.mapper.PostMapper;
 import com.afikur.blog.model.Post;
 import com.afikur.blog.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,6 @@ import javax.validation.Valid;
 @RequestMapping("/api/v1/posts")
 @RequiredArgsConstructor
 public class PostController {
-    private final PostMapper postMapper;
     private final PostService postService;
 
     @GetMapping
@@ -44,8 +42,7 @@ public class PostController {
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public Post add(@Valid @RequestBody PostRequest postRequest) {
-        Post post = postMapper.toPost(postRequest);
-        return postService.save(post);
+        return postService.save(postRequest);
     }
 
 }

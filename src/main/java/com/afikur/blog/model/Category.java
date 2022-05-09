@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,7 +29,7 @@ public class Category {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Post> posts;
+    private List<Post> posts = new ArrayList<>();
 
     @PrePersist
     public void onCreate() {
@@ -39,6 +40,11 @@ public class Category {
     @PreUpdate
     public void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    public void addPost(Post post) {
+        this.posts.add(post);
+        post.setCategory(this);
     }
 
     @Override

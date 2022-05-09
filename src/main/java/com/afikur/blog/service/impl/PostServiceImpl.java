@@ -4,8 +4,11 @@ import com.afikur.blog.dto.ApiResponse;
 import com.afikur.blog.dto.PagedResponse;
 import com.afikur.blog.dto.PostRequest;
 import com.afikur.blog.exception.ResourceNotFoundException;
+import com.afikur.blog.mapper.PostMapper;
+import com.afikur.blog.model.Category;
 import com.afikur.blog.model.Post;
 import com.afikur.blog.model.User;
+import com.afikur.blog.repository.CategoryRepository;
 import com.afikur.blog.repository.PostRepository;
 import com.afikur.blog.repository.UserRepository;
 import com.afikur.blog.service.PostService;
@@ -25,6 +28,10 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
+    private final CategoryRepository categoryRepository;
+
+    private final PostMapper postMapper;
+
     @Override
     public PagedResponse<Post> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
@@ -38,7 +45,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post save(Post post) {
+    public Post save(PostRequest postRequest) {
+        Category category = categoryRepository.findById(postRequest.categoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("category not found with id " + postRequest.categoryId()));
+        Post post = postMapper.toPost(postRequest);
+        post.setCategory(category);
+        category.addPost(post);
         return postRepository.save(post);
     }
 
