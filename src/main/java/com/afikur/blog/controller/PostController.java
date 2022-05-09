@@ -5,6 +5,7 @@ import com.afikur.blog.dto.PagedResponse;
 import com.afikur.blog.dto.PostRequest;
 import com.afikur.blog.model.Post;
 import com.afikur.blog.service.PostService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/v1/posts")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class PostController {
     private final PostService postService;
 
